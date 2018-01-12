@@ -4,7 +4,11 @@ lazy val commonSettings = Seq(
   organization := "no.amumurst",
   scalaVersion := "2.12.4",
   version      := "0.1.0-SNAPSHOT",
-  scalacOptions ++= Seq("-Ypartial-unification"),
+  scalacOptions ++= Seq(
+    "-Ypartial-unification",
+    "-feature",
+    "-language:higherKinds",
+  ),
   libraryDependencies ++= testDeps ++ coreDeps,
   addCompilerPlugin(
     "org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full
