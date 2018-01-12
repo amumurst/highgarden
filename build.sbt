@@ -8,7 +8,15 @@ lazy val commonSettings = Seq(
   libraryDependencies ++= testDeps ++ coreDeps,
   addCompilerPlugin(
     "org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full
-  )
+  ),
+  wartremoverErrors ++=
+    Warts.allBut(
+      Wart.DefaultArguments,
+      Wart.FinalCaseClass,
+      Wart.ImplicitParameter,
+      Wart.Overloading,
+      Wart.ToString,
+      Wart.PublicInference)
 )
 
 lazy val lib = (project in file("lib")).settings(commonSettings)
