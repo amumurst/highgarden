@@ -15,6 +15,8 @@ object Dependencies {
     "org.typelevel" %% "cats-kernel"
   ).map(_ % catsVersion)
 
+  val mouse = "org.typelevel" %% "mouse" % "0.16"
+
   val http4s = Seq(
     "org.http4s" %% "http4s-dsl",
     "org.http4s" %% "http4s-blaze-server",
@@ -37,7 +39,8 @@ object Dependencies {
   ) ++ doobie
 
   val divDeps = Seq(
-    logging
+    logging,
+    mouse
   )
 
   val testDeps = Seq(scalaTest).map(_ % Test)
