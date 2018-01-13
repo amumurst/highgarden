@@ -2,20 +2,25 @@ import Dependencies._
 
 enablePlugins(DockerPlugin)
 
-val dockerSettings = dockerfile in docker := {
-  val artifact: File = assembly.value
-  val artifactTargetPath = s"/app/${artifact.name}"
+val dockerSettings = Seq(
+  dockerfile in docker := {
+    val artifact: File = assembly.value
+    val artifactTargetPath = s"/app/${artifact.name}"
 
-  new Dockerfile {
-    from("java")
-    run("apt-get", "update")
-    run("apt-get", "-y", "install", "postgresql")
-    user("postgres")
-    expose(8080)
-    add(artifact, artifactTargetPath)
-    entryPoint("java", "-jar", artifactTargetPath)
-  }
-}
+    new Dockerfile {
+      from("java")
+      run("apt-get", "update")
+      run("apt-get", "-y", "install", "postgresql")
+      user("postgres")
+      expose(8080)
+      add(artifact, artifactTargetPath)
+      entryPoint("java", "-jar", artifactTargetPath)
+    }
+  },
+  imageNames in docker := Seq(
+    ImageName(s"amumurst/${name.value}:latest")
+  )
+)
 
 lazy val baseSettings = Seq(
   organization := "no.amumurst",
