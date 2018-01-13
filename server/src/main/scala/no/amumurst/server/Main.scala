@@ -24,7 +24,7 @@ object Main extends StreamApp[IO] {
 
     migrate(transactor.dataSource)
     BlazeBuilder[IO]
-      .bindHttp(8080, "localhost")
+      .bindHttp(8080, "0.0.0.0")
       .mountService(CarService(transactor).service, "/")
       .serve
   }

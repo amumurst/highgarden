@@ -1,9 +1,29 @@
 import Dependencies._
 
-lazy val commonSettings = Seq(
+enablePlugins(DockerPlugin)
+
+val dockerSettings = dockerfile in docker := {
+  val artifact: File = assembly.value
+  val artifactTargetPath = s"/app/${artifact.name}"
+
+  new Dockerfile {
+    from("java")
+    run("apt-get", "update")
+    run("apt-get", "-y", "install", "postgresql")
+    user("postgres")
+    expose(8080)
+    add(artifact, artifactTargetPath)
+    entryPoint("java", "-jar", artifactTargetPath)
+  }
+}
+
+lazy val baseSettings = Seq(
   organization := "no.amumurst",
   scalaVersion := "2.12.4",
-  version      := "0.1.0-SNAPSHOT",
+  version      := "0.1.0-SNAPSHOT"
+)
+
+lazy val commonSettings = Seq(
   scalacOptions ++= Seq(
     "-Ypartial-unification",
     "-feature",
@@ -20,8 +40,9 @@ lazy val commonSettings = Seq(
       Wart.ImplicitParameter,
       Wart.Overloading,
       Wart.ToString,
-      Wart.PublicInference)
-)
+      Wart.PublicInference),
+  test in assembly := {}
+) ++ baseSettings
 
 lazy val lib = (project in file("lib")).settings(commonSettings)
 
@@ -31,4 +52,8 @@ lazy val root =
   (project in file("."))
     .dependsOn(server)
     .aggregate(lib, server)
-    .settings(mainClass.in(Compile) := mainClass.in(Compile).in(server).value)
+    .settings(
+      baseSettings,
+      name := "highgarden",
+      mainClass.in(Compile) := mainClass.in(Compile).in(server).value,
+      dockerSettings)

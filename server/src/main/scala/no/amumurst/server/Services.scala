@@ -11,6 +11,7 @@ case class CarService(transactor: DataTransactor[IO]) {
   def cars = transactor.carRepo.getAllCars
 
   val service = HttpService[IO] {
+    case GET -> Root => Ok("Hello from carservice")
     case GET -> Root / "cars" =>
       Ok(cars.map(_.asJson))
   }
