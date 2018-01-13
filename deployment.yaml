@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: highgarden
+spec:
+  replicas: 2
+  selector:
+    app: highgarden
+  template:
+    metadata:
+      name: highgarden
+      labels:
+        app: highgarden
+    spec:
+      containers:
+      - name: highgarden
+        image: amumurst/highgarden:latest
+        ports:
+        - containerPort: 8080
