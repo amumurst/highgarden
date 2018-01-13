@@ -27,5 +27,8 @@ lazy val lib = (project in file("lib")).settings(commonSettings)
 
 lazy val server = (project in file("server")).dependsOn(lib).settings(commonSettings)
 
-lazy val root = (project in file("."))
-  .aggregate(lib, server)
+lazy val root =
+  (project in file("."))
+    .dependsOn(server)
+    .aggregate(lib, server)
+    .settings(mainClass.in(Compile) := mainClass.in(Compile).in(server).value)
