@@ -7,23 +7,24 @@ import cats.implicits._
 import no.amumurst.transaction.DataTransactor
 import org.http4s._
 import org.http4s.circe._
-import org.http4s.dsl.io._
+import org.http4s.dsl.Http4sDsl
 
-case class CarService(transactor: DataTransactor[IO]) {
+case class CarService[F[_]: Effect](transactor: DataTransactor[F])
+    extends Http4sDsl[F] {
 
   private val base = Root / "cars"
   private val repo = transactor.carRepo
 
-  implicit val carDecoder: EntityDecoder[IO, Car] = jsonOf[IO, Car]
-  implicit val carListDecoder: EntityDecoder[IO, List[Car]] =
-    jsonOf[IO, List[Car]]
-  implicit val carEncoder: EntityEncoder[IO, Car] = jsonEncoderOf[IO, Car]
-  implicit val carListEncoder: EntityEncoder[IO, List[Car]] =
-    jsonEncoderOf[IO, List[Car]]
+  implicit val carDecoder: EntityDecoder[F, Car] = jsonOf[F, Car]
+  implicit val carListDecoder: EntityDecoder[F, List[Car]] =
+    jsonOf[F, List[Car]]
+  implicit val carEncoder: EntityEncoder[F, Car] = jsonEncoderOf[F, Car]
+  implicit val carListEncoder: EntityEncoder[F, List[Car]] =
+    jsonEncoderOf[F, List[Car]]
 
-  val service = HttpService[IO] {
+  val service = HttpService[F] {
     case GET -> `base` =>
-      Ok(repo.getAllCars)
+      Ok.apply(repo.getAllCars)
     case GET -> `base` / LongVar(id) =>
       repo
         .getCar(id)
