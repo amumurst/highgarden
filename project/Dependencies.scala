@@ -6,16 +6,13 @@ object Dependencies {
   private val circeVersion  = "0.9.0"
   private val catsVersion   = "1.0.1"
 
-  lazy val scalaTest = "org.scalatest" %% "scalatest"   % "3.0.3"
-  val logging        = "org.slf4j"     % "slf4j-simple" % "1.7.25"
+  lazy val scalaTest = "org.scalatest" %% "scalatest" % "3.0.3"
 
   val cats = Seq(
     "org.typelevel" %% "cats-core",
     "org.typelevel" %% "cats-macros",
     "org.typelevel" %% "cats-kernel"
   ).map(_ % catsVersion)
-
-  val mouse = "org.typelevel" %% "mouse" % "0.16"
 
   val http4s = Seq(
     "org.http4s" %% "http4s-dsl",
@@ -39,8 +36,7 @@ object Dependencies {
   ) ++ doobie
 
   val divDeps = Seq(
-    logging,
-    mouse
+    "org.slf4j" % "slf4j-simple" % "1.7.25"
   )
 
   val testDeps = Seq(scalaTest).map(_ % Test)
