@@ -7,6 +7,7 @@ import cats.effect.IO
 import com.opentable.db.postgres.embedded.{EmbeddedPostgres, FlywayPreparer}
 import fs2.StreamApp.ExitCode
 import fs2.{Stream, StreamApp}
+import no.amumurst.server.services.CarService
 import no.amumurst.transaction.DataTransactor
 import org.http4s.server.blaze._
 
