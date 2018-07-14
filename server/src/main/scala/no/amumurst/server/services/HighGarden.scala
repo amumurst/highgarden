@@ -2,14 +2,15 @@ package no.amumurst
 package server
 package services
 
-import javax.sql.DataSource
-
 import cats.effect.Effect
 import com.opentable.db.postgres.embedded.{EmbeddedPostgres, FlywayPreparer}
 import fs2.StreamApp.ExitCode
 import fs2.{Stream, StreamApp}
+import javax.sql.DataSource
 import no.amumurst.transaction.DataTransactor
 import org.http4s.server.blaze._
+
+import scala.concurrent.ExecutionContext.Implicits.global
 
 case class HighGarden[F[_]: Effect]() extends StreamApp[F] {
   def migrate(dataSource: DataSource) =

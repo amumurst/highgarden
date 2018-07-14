@@ -24,7 +24,7 @@ val dockerSettings = Seq(
 
 lazy val baseSettings = Seq(
   organization := "no.amumurst",
-  scalaVersion := "2.12.4",
+  scalaVersion := "2.12.6",
   version      := "0.1.0-SNAPSHOT"
 )
 
@@ -36,7 +36,7 @@ lazy val commonSettings = Seq(
   ),
   libraryDependencies ++= testDeps ++ coreDeps,
   addCompilerPlugin(
-    "org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full
+    "org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full
   ),
   wartremoverErrors ++=
     Warts.allBut(

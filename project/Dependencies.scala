@@ -1,12 +1,12 @@
 import sbt._
 
 object Dependencies {
-  private val http4sVersion = "0.18.0-M8"
-  private val doobieVersion = "0.5.0-M13"
-  private val circeVersion  = "0.9.0"
-  private val catsVersion   = "1.0.1"
+  private val http4sVersion = "0.18.15"
+  private val doobieVersion = "0.5.3"
+  private val circeVersion  = "0.9.3"
+  private val catsVersion   = "1.1.0"
 
-  lazy val scalaTest = "org.scalatest" %% "scalatest" % "3.0.3"
+  lazy val scalaTest = "org.scalatest" %% "scalatest" % "3.0.5"
 
   val cats = Seq(
     "org.typelevel" %% "cats-core",
@@ -17,7 +17,7 @@ object Dependencies {
   val http4s = Seq(
     "org.http4s" %% "http4s-dsl",
     "org.http4s" %% "http4s-blaze-server",
-    "org.http4s" %% "http4s-circe",
+    "org.http4s" %% "http4s-circe"
   ).map(_ % http4sVersion)
 
   val json = Seq(
@@ -31,8 +31,8 @@ object Dependencies {
   ).map(_ % doobieVersion)
 
   val database = Seq(
-    "com.opentable.components" % "otj-pg-embedded" % "0.10.0",
-    "org.flywaydb"             % "flyway-core"     % "5.0.5"
+    "com.opentable.components" % "otj-pg-embedded" % "0.12.0",
+    "org.flywaydb"             % "flyway-core"     % "5.1.4"
   ) ++ doobie
 
   val divDeps = Seq(
