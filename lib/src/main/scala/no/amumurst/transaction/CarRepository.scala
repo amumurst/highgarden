@@ -37,9 +37,11 @@ case class CarRepository[F[_]: Monad](transactor: Transactor[F]) {
             INSERT INTO car
               (licence_plate, color, navn)
             VALUES
-              ${car.licenseNumber},
-              ${car.color},
-              ${car.name}
+              (
+                ${car.licenseNumber},
+                ${car.color},
+                ${car.name}
+                )
       """.update.withUniqueGeneratedKeys[Car]("*")
 
     def updateCar(car: Car): ConnectionIO[Car] =
