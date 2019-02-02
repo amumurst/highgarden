@@ -27,7 +27,7 @@ case class CarRepository[F[_]: Monad](transactor: Transactor[F]) {
     private def carIdFilter(id: Long): Fragment =
       fr""" WHERE car_id = $id """
     def allCars: ConnectionIO[List[Car]] =
-      selectFragment.query[Car].list
+      selectFragment.query[Car].to[List]
 
     def getCar(id: Long): ConnectionIO[Option[Car]] =
       (selectFragment ++ carIdFilter(id)).query[Car].option

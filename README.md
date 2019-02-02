@@ -29,7 +29,6 @@ Library | Version | Description
 <a href="https://github.com/sbt/sbt-assembly">Sbt-assembly</a> | 0.14.6 | Create fatjars from sbt, used in docker images
 <a href="https://github.com/marcuslonnberg/sbt-docker">Sbt-docker</a> | 1.5.0 | Create docker images from sbt
 <a href="https://github.com/scalameta/scalafmt">Scalafmt</a> | 1.4.0 | Codeformatter for Scala
-<a href="https://github.com/wartremover/wartremover">Wartremover</a> | 2.2.1 | Check for common language warts at compile time
 <a href="https://github.com/typelevel/cats">Cats</a> | 1.0.1 | Functional library and effect monad
 <a href="https://github.com/tpolecat/doobie">Doobie</a> | 0.5.0-M13 | Functional JDBC for database access
 <a href="https://github.com/circe/circe">Circe</a> | 0.9.0 | JSON parsing and encoding

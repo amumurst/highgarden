@@ -4,16 +4,15 @@ package services
 
 import cats.effect._
 import cats.implicits._
-import no.amumurst.transaction.DataTransactor
+import no.amumurst.transaction.CarRepository
 import org.http4s._
 import org.http4s.circe._
 import org.http4s.dsl.Http4sDsl
 
-case class CarService[F[_]: Effect](transactor: DataTransactor[F])
+case class CarService[F[_]: Effect](repo: CarRepository[F])
     extends Http4sDsl[F] {
 
   private val base = Root / "cars"
-  private val repo = transactor.carRepo
 
   implicit val carDecoder: EntityDecoder[F, Car] = jsonOf[F, Car]
   implicit val carListDecoder: EntityDecoder[F, List[Car]] =
@@ -22,7 +21,7 @@ case class CarService[F[_]: Effect](transactor: DataTransactor[F])
   implicit val carListEncoder: EntityEncoder[F, List[Car]] =
     jsonEncoderOf[F, List[Car]]
 
-  val service = HttpService[F] {
+  val service = HttpRoutes.of[F] {
     case GET -> `base` =>
       Ok.apply(repo.getAllCars)
     case GET -> `base` / LongVar(id) =>

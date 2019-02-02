@@ -1,10 +1,10 @@
 import sbt._
 
 object Dependencies {
-  private val http4sVersion = "0.18.15"
-  private val doobieVersion = "0.5.3"
-  private val circeVersion  = "0.9.3"
-  private val catsVersion   = "1.1.0"
+  private val http4sVersion = "0.20.0-M5"
+  private val doobieVersion = "0.6.0"
+  private val circeVersion  = "0.11.1"
+  private val catsVersion   = "1.6.0"
 
   lazy val scalaTest = "org.scalatest" %% "scalatest" % "3.0.5"
 
@@ -31,8 +31,8 @@ object Dependencies {
   ).map(_ % doobieVersion)
 
   val database = Seq(
-    "com.opentable.components" % "otj-pg-embedded" % "0.12.0",
-    "org.flywaydb"             % "flyway-core"     % "5.1.4"
+    "com.opentable.components" % "otj-pg-embedded" % "0.13.1",
+    "org.flywaydb"             % "flyway-core"     % "5.2.4"
   ) ++ doobie
 
   val divDeps = Seq(
