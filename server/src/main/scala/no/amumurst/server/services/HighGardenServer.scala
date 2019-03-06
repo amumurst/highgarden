@@ -18,12 +18,9 @@ object HighGardenServer {
     : Resource[F, Server[F]] =
     for {
       db         <- Database.createEmbedded[F]
-      ce         <- ExecutionContexts.fixedThreadPool[F](32)
-      te         <- ExecutionContexts.cachedThreadPool[F]
-      xa         = Transactor.fromDataSource[F](db.getPostgresDatabase, ce, te)
+      xa         <- Database.transactor[F](db)
       carService = CarService[F](CarRepository(xa)).service
       httpApp    = Router("/" -> carService).orNotFound
-      _          <- Resource.liftF(Database.migrate(xa.kernel))
       server <- BlazeServerBuilder[F]
                  .bindHttp(8080, "0.0.0.0")
                  .withHttpApp(httpApp)
@@ -33,13 +30,27 @@ object HighGardenServer {
 }
 
 object Database {
+  def transactor[F[_]: Async: ContextShift](
+      ds: DataSource,
+      ceSize: Int = 32): Resource[F, Transactor[F]] =
+    for {
+      ce <- ExecutionContexts.fixedThreadPool[F](ceSize)
+      te <- ExecutionContexts.cachedThreadPool[F]
+    } yield Transactor.fromDataSource[F](ds, ce, te)
+
   def migrate[F[_]](dataSource: DataSource)(implicit F: Sync[F]): F[Unit] =
     F.delay(
       FlywayPreparer
         .forClasspathLocation("classpath:db/migration")
         .prepare(dataSource))
 
-  def createEmbedded[F[_]](implicit F: Sync[F]): Resource[F, EmbeddedPostgres] =
-    Resource.make(F.delay(EmbeddedPostgres.builder().start()))(s =>
-      F.delay(s.close()))
+  def createEmbedded[F[_]](implicit F: Sync[F]): Resource[F, DataSource] =
+    for {
+      embeddedDb <- Resource.make(F.delay(EmbeddedPostgres.builder().start()))(
+                     s => F.delay(s.close()))
+      db = embeddedDb.getPostgresDatabase
+      _  <- Resource.liftF(migrate(db))
+
+    } yield db
+
 }
