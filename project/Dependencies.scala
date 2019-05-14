@@ -1,7 +1,7 @@
 import sbt._
 
 object Dependencies {
-  private val http4sVersion = "0.20.0-M5"
+  private val http4sVersion = "0.20.0"
   private val doobieVersion = "0.6.0"
   private val circeVersion  = "0.11.1"
   private val catsVersion   = "1.6.0"
@@ -34,13 +34,13 @@ object Dependencies {
   ) ++ doobie
 
   val divDeps = Seq(
-    "org.slf4j" % "slf4j-simple" % "1.7.25"
+    "org.slf4j" % "slf4j-simple" % "1.7.26"
   )
 
   val testDeps = Seq(
-    "org.specs2" %% "specs2-core"       % "4.4.1",
-    "org.specs2" %% "specs2-scalacheck" % "4.4.1",
-    "org.specs2" %% "specs2-mock"       % "4.4.1"
+    "org.specs2" %% "specs2-core"       % "4.5.1",
+    "org.specs2" %% "specs2-scalacheck" % "4.5.1",
+    "org.specs2" %% "specs2-mock"       % "4.5.1"
   ).map(_ % Test)
   val coreDeps = cats ++ http4s ++ database ++ divDeps ++ json
 }

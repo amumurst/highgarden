@@ -38,16 +38,17 @@ object Database {
       te <- ExecutionContexts.cachedThreadPool[F]
     } yield Transactor.fromDataSource[F](ds, ce, te)
 
-  def migrate[F[_]](dataSource: DataSource)(implicit F: Sync[F]): F[Unit] =
-    F.delay(
+  def migrate[F[_]: Sync](dataSource: DataSource): F[Unit] =
+    Sync[F].delay(
       FlywayPreparer
         .forClasspathLocation("classpath:db/migration")
         .prepare(dataSource))
 
-  def createEmbedded[F[_]](implicit F: Sync[F]): Resource[F, DataSource] =
+  def createEmbedded[F[_]: Sync]: Resource[F, DataSource] =
     for {
-      embeddedDb <- Resource.make(F.delay(EmbeddedPostgres.builder().start()))(
-                     s => F.delay(s.close()))
+      embeddedDb <- Resource.make(
+                     Sync[F].delay(EmbeddedPostgres.builder().start()))(s =>
+                     Sync[F].delay(s.close()))
       db = embeddedDb.getPostgresDatabase
       _  <- Resource.liftF(migrate(db))
 
