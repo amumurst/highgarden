@@ -43,10 +43,10 @@ lazy val commonSettings = Seq(
   test in assembly := {}
 ) ++ baseSettings
 
-lazy val lib = (project in file("lib")).settings(commonSettings)
+lazy val lib = (project in file("lib")).settings(commonSettings).disablePlugins(RevolverPlugin)
 
 lazy val server =
-  (project in file("server")).dependsOn(lib).settings(commonSettings)
+  (project in file("server")).dependsOn(lib).settings(commonSettings).disablePlugins(RevolverPlugin)
 
 lazy val root =
   (project in file("."))
