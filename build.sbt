@@ -37,22 +37,10 @@ lazy val commonSettings = Seq(
     "-deprecation"
   ),
   libraryDependencies ++= testDeps ++ coreDeps,
-  addCompilerPlugin(
-    ("org.scalamacros" % "paradise" % "2.1.1").cross(CrossVersion.full)
-  ),
-  test in assembly := {}
+  test in assembly := {},
+  Test / fork := true
 ) ++ baseSettings
-
-lazy val lib = (project in file("lib")).settings(commonSettings).disablePlugins(RevolverPlugin)
-
-lazy val server =
-  (project in file("server")).dependsOn(lib).settings(commonSettings).disablePlugins(RevolverPlugin)
 
 lazy val root =
   (project in file("."))
-    .dependsOn(server)
-    .aggregate(lib, server)
-    .settings(baseSettings,
-              name := "highgarden",
-              mainClass.in(Compile) := mainClass.in(Compile).in(server).value,
-              dockerSettings)
+    .settings(commonSettings, name := "highgarden", dockerSettings)

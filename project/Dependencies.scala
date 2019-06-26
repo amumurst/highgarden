@@ -1,10 +1,10 @@
 import sbt._
 
 object Dependencies {
-  private val http4sVersion = "0.20.0"
-  private val doobieVersion = "0.6.0"
+  private val http4sVersion = "0.20.3"
+  private val doobieVersion = "0.7.0"
   private val circeVersion  = "0.11.1"
-  private val catsVersion   = "1.6.0"
+  private val catsVersion   = "1.6.1"
 
   val cats = Seq(
     "org.typelevel" %% "cats-core",
@@ -29,8 +29,8 @@ object Dependencies {
   ).map(_ % doobieVersion)
 
   val database = Seq(
-    "com.opentable.components" % "otj-pg-embedded" % "0.13.1",
-    "org.flywaydb"             % "flyway-core"     % "5.2.4"
+    "io.zonky.test" % "embedded-postgres" % "1.2.3",
+    "org.flywaydb"  % "flyway-core"       % "5.2.4"
   ) ++ doobie
 
   val divDeps = Seq(
