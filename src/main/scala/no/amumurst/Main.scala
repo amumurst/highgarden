@@ -15,7 +15,7 @@ object Main extends IOApp {
       db         <- Database.createEmbedded
       xa         <- Database.transactor(db)
       carService = CarService(CarRepository(xa)).service
-      httpApp    = Router("/car" -> carService).orNotFound
+      httpApp    = Router("/cars" -> carService).orNotFound
       server <- BlazeServerBuilder[IO]
                  .bindHttp(8080, "0.0.0.0")
                  .withHttpApp(httpApp)
