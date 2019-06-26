@@ -10,7 +10,7 @@ class CarRepositorySpec extends Specification {
 
   import DatabaseEmbedder.databaseTest
 
-  /*"CarRepository" should {
+  "CarRepository" should {
     "get non existent car is None" in databaseTest { t =>
       val repo = CarRepository(t)
       for {
@@ -24,5 +24,5 @@ class CarRepositorySpec extends Specification {
         carOne <- repo.getCar(1)
       } yield carOne must beSome.which(_.id must beEqualTo(1))
     }
-  }*/
+  }
 }

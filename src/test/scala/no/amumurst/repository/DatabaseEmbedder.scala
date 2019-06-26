@@ -1,10 +1,6 @@
 package no.amumurst.repository
 
-import java.util.concurrent.CopyOnWriteArrayList
-import java.util.function.Consumer
-
 import cats.effect._
-import cats.implicits._
 import io.zonky.test.db.postgres.embedded._
 import doobie.util.ExecutionContexts
 import doobie.util.transactor.Transactor
@@ -17,8 +13,7 @@ object DatabaseEmbedder {
   implicit val dsss: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
 
   lazy val provider: PreparedDbProvider = PreparedDbProvider.forPreparer(
-    FlywayPreparer.forClasspathLocation("classpath:db/migration"),
-    new CopyOnWriteArrayList[Consumer[EmbeddedPostgres.Builder]])
+    FlywayPreparer.forClasspathLocation("classpath:db/migration"))
 
   private val databaseConnection = Resource.make(
     IO(
