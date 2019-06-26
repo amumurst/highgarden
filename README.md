@@ -1,6 +1,6 @@
 # Highgarden
 
-Why the name _highgarden_? Why not. (And also, Game of Thrones is awesome) 
+Why the name _highgarden_? Why not. (And also, Game of Thrones)
 
 Highgarden is an example all-in-one webservice. It mounts up a REST-like service for maintaining a list of cars.
 
@@ -24,16 +24,16 @@ Highgarden is built upon:
 
 Library | Version | Description
 ------------ | ------------- | -------------
-<a href="https://github.com/scala/scala">Scala</a> |2.12.4 | Scala programming language
-<a href="https://github.com/sbt/sbt">Sbt</a> | 1.0.4 | Buildtool for scala
+<a href="https://github.com/scala/scala">Scala</a> |2.12.8 | Scala programming language
+<a href="https://github.com/sbt/sbt">Sbt</a> | 1.2.8 | Buildtool for scala
 <a href="https://github.com/sbt/sbt-assembly">Sbt-assembly</a> | 0.14.6 | Create fatjars from sbt, used in docker images
 <a href="https://github.com/marcuslonnberg/sbt-docker">Sbt-docker</a> | 1.5.0 | Create docker images from sbt
 <a href="https://github.com/scalameta/scalafmt">Scalafmt</a> | 1.4.0 | Codeformatter for Scala
-<a href="https://github.com/typelevel/cats">Cats</a> | 1.0.1 | Functional library and effect monad
-<a href="https://github.com/tpolecat/doobie">Doobie</a> | 0.5.0-M13 | Functional JDBC for database access
-<a href="https://github.com/circe/circe">Circe</a> | 0.9.0 | JSON parsing and encoding
-<a href="https://github.com/http4s/http4s">Http4s</a> | 0.18.0-M8 | HTTP services, server and client
-<a href="https://github.com/opentable/otj-pg-embedded">otj-pg-embedded</a> | 0.10.0 | Embedded database for testing
+<a href="https://github.com/typelevel/cats">Cats</a> | 1.6.1 | Functional library and effect monad
+<a href="https://github.com/tpolecat/doobie">Doobie</a> | 0.7.0 | Functional JDBC for database access
+<a href="https://github.com/circe/circe">Circe</a> | 0.11.1 | JSON parsing and encoding
+<a href="https://github.com/http4s/http4s">Http4s</a> | 0.20.3 | HTTP services, server and client
+<a href="https://github.com/zonkyio/embedded-postgres">embedded-postgres</a> | 1.2.3 | Embedded database for testing
 <a href="https://github.com/flyway/flyway">Flyway</a> | 5.0.5 | Database migrations
 
 
