@@ -2,9 +2,8 @@ package no.amumurst
 package repository
 
 import cats.effect._
-import cats.implicits._
-import io.zonky.test.db.postgres.embedded.{EmbeddedPostgres, FlywayPreparer}
 import doobie.{ExecutionContexts, Transactor}
+import io.zonky.test.db.postgres.embedded.{EmbeddedPostgres, FlywayPreparer}
 import javax.sql.DataSource
 
 object Database {

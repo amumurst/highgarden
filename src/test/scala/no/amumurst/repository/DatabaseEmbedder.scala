@@ -1,9 +1,9 @@
 package no.amumurst.repository
 
 import cats.effect._
-import io.zonky.test.db.postgres.embedded._
 import doobie.util.ExecutionContexts
 import doobie.util.transactor.Transactor
+import io.zonky.test.db.postgres.embedded._
 import org.specs2.execute.Result
 
 import scala.concurrent.ExecutionContext

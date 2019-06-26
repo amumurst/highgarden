@@ -7,14 +7,13 @@ import no.amumurst.domain.Car
 import no.amumurst.repository.CarRepositoryAlg
 import org.http4s._
 import org.http4s.dsl.io._
-import org.http4s.circe._
-import org.http4s.dsl.Http4sDsl
 
-case class CarService(repo: CarRepositoryAlg[IO]) {
-  def carResponse(e: Either[Throwable, Car]) = e match {
-    case Right(car) => Ok(car)
-    case Left(err)  => InternalServerError(err.getMessage)
-  }
+class CarService(repo: CarRepositoryAlg[IO]) {
+  private def carResponse(e: Either[Throwable, Car]): IO[Response[IO]] =
+    e match {
+      case Right(car) => Ok(car)
+      case Left(err)  => InternalServerError(err.getMessage)
+    }
 
   val service: HttpRoutes[IO] = HttpRoutes.of[IO] {
     case GET -> Root =>

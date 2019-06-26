@@ -1,14 +1,11 @@
 package no.amumurst.services
 
 import cats.effect._
-import cats.implicits._
 import no.amumurst.domain.Car
-import org.specs2.mutable.Specification
-
-import scala.concurrent.ExecutionContext
 import no.amumurst.repository.CarRepositoryAlg
 import org.http4s._
 import org.http4s.implicits._
+import org.specs2.mutable.Specification
 
 class CarServiceSpec extends Specification {
   import CarServiceSpecData._

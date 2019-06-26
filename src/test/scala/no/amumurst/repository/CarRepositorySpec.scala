@@ -1,10 +1,7 @@
 package no.amumurst.repository
 
-import cats.implicits._
 import no.amumurst.domain.Car
 import org.specs2.mutable.Specification
-
-import scala.concurrent.ExecutionContext
 
 class CarRepositorySpec extends Specification {
 

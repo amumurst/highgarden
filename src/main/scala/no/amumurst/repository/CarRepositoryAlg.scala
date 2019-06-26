@@ -2,9 +2,9 @@ package no.amumurst
 package repository
 
 import cats.effect._
-import domain.Car
 import doobie._
 import doobie.implicits._
+import no.amumurst.domain.Car
 
 trait CarRepositoryAlg[F[_]] {
   def getAllCars: F[List[Car]]
@@ -17,7 +17,6 @@ trait CarRepositoryAlg[F[_]] {
 
 case class CarRepository(transactor: Transactor[IO])
     extends CarRepositoryAlg[IO] {
-  import CarRepository._
 
   val getAllCars: IO[List[Car]] =
     CarRepositoryQueries.allCars.transact(transactor)

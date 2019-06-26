@@ -4,8 +4,8 @@ package domain
 import cats.effect.IO
 import io.circe._
 import io.circe.generic.semiauto._
-import org.http4s.circe._
 import org.http4s._
+import org.http4s.circe._
 
 case class Car(id: Long,
                licenseNumber: String,

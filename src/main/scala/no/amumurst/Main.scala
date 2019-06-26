@@ -1,12 +1,12 @@
 package no.amumurst
 
-import no.amumurst.repository._
-import no.amumurst.services._
 import cats.effect._
 import cats.implicits._
-import org.http4s.server.{Router, Server}
-import org.http4s.server.blaze.BlazeServerBuilder
+import no.amumurst.repository._
+import no.amumurst.services._
 import org.http4s.implicits._
+import org.http4s.server.blaze.BlazeServerBuilder
+import org.http4s.server.{Router, Server}
 
 object Main extends IOApp {
 
@@ -14,7 +14,7 @@ object Main extends IOApp {
     for {
       db         <- Database.createEmbedded
       xa         <- Database.transactor(db)
-      carService = CarService(CarRepository(xa)).service
+      carService = new CarService(CarRepository(xa)).service
       httpApp    = Router("/cars" -> carService).orNotFound
       server <- BlazeServerBuilder[IO]
                  .bindHttp(8080, "0.0.0.0")
