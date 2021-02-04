@@ -24,13 +24,12 @@ val dockerSettings = Seq(
 
 lazy val baseSettings = Seq(
   organization := "no.amumurst",
-  scalaVersion := "2.12.8",
+  scalaVersion := "2.13.4",
   version := "0.1.0-SNAPSHOT"
 )
 
 lazy val commonSettings = Seq(
   scalacOptions ++= Seq(
-    "-Ypartial-unification",
     "-feature",
     "-language:higherKinds",
     "-unchecked",

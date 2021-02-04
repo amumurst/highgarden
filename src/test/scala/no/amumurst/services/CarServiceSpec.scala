@@ -17,7 +17,7 @@ class CarServiceSpec extends Specification {
         val service = new CarService(repo).service.orNotFound
         val request = Request[IO](method = Method.GET, uri = uri"/")
 
-        val response = service.run(request).unsafeRunSync
+        val response = service.run(request).unsafeRunSync()
 
         response.status must beEqualTo(Status.Ok)
       }
@@ -34,7 +34,7 @@ class CarServiceSpec extends Specification {
         val request = Request[IO](method = Method.POST, uri = uri"/")
           .withEntity(emptyCar)
 
-        val response = service.run(request).unsafeRunSync
+        val response = service.run(request).unsafeRunSync()
 
         response.status must beEqualTo(Status.Ok)
       }
@@ -42,7 +42,7 @@ class CarServiceSpec extends Specification {
         val request = Request[IO](method = Method.POST, uri = uri"/")
           .withEntity(emptyCar.copy(id = 1))
 
-        val response = service.run(request).unsafeRunSync
+        val response = service.run(request).unsafeRunSync()
 
         response.status must beEqualTo(Status.InternalServerError)
       }
@@ -58,7 +58,7 @@ class CarServiceSpec extends Specification {
         val request = Request[IO](method = Method.PUT, uri = uri"/")
           .withEntity(List(emptyCar, emptyCar))
 
-        val response = service.run(request).unsafeRunSync
+        val response = service.run(request).unsafeRunSync()
 
         response.status must beEqualTo(Status.Ok)
       }
@@ -66,7 +66,7 @@ class CarServiceSpec extends Specification {
         val request = Request[IO](method = Method.PUT, uri = uri"/")
           .withEntity(List(emptyCar, emptyCar.copy(id = 1)))
 
-        val response = service.run(request).unsafeRunSync
+        val response = service.run(request).unsafeRunSync()
 
         response.status must beEqualTo(Status.InternalServerError)
       }
@@ -77,7 +77,7 @@ class CarServiceSpec extends Specification {
       "responds ok" in {
         val request = Request[IO](method = Method.DELETE, uri = uri"/1")
 
-        val response = service.run(request).unsafeRunSync
+        val response = service.run(request).unsafeRunSync()
 
         response.status must beEqualTo(Status.Ok)
       }
@@ -94,14 +94,14 @@ class CarServiceSpec extends Specification {
       "responds notFound when asking for something not in database" in {
         val request = Request[IO](method = Method.GET, uri = uri"/45")
 
-        val response = service.run(request).unsafeRunSync
+        val response = service.run(request).unsafeRunSync()
 
         response.status must beEqualTo(Status.NotFound)
       }
       "responds ok when asking for something not in database" in {
         val request = Request[IO](method = Method.GET, uri = uri"/12")
 
-        val response = service.run(request).unsafeRunSync
+        val response = service.run(request).unsafeRunSync()
 
         response.status must beEqualTo(Status.Ok)
       }
@@ -109,7 +109,7 @@ class CarServiceSpec extends Specification {
       "responds notFound when asking for string id" in {
         val request = Request[IO](method = Method.GET, uri = uri"/askd")
 
-        val response = service.run(request).unsafeRunSync
+        val response = service.run(request).unsafeRunSync()
 
         response.status must beEqualTo(Status.NotFound)
       }
@@ -126,7 +126,7 @@ class CarServiceSpec extends Specification {
         val request = Request[IO](method = Method.PATCH, uri = uri"/12")
           .withEntity(emptyCar)
 
-        val response = service.run(request).unsafeRunSync
+        val response = service.run(request).unsafeRunSync()
 
         response.status must beEqualTo(Status.Ok)
       }
@@ -134,7 +134,7 @@ class CarServiceSpec extends Specification {
         val request = Request[IO](method = Method.PATCH, uri = uri"/12")
           .withEntity(emptyCar.copy(id = 1))
 
-        val response = service.run(request).unsafeRunSync
+        val response = service.run(request).unsafeRunSync()
 
         response.status must beEqualTo(Status.Ok)
       }
@@ -142,7 +142,7 @@ class CarServiceSpec extends Specification {
         val request = Request[IO](method = Method.PATCH, uri = uri"/11")
           .withEntity(emptyCar)
 
-        val response = service.run(request).unsafeRunSync
+        val response = service.run(request).unsafeRunSync()
 
         response.status must beEqualTo(Status.InternalServerError)
       }
@@ -162,7 +162,7 @@ class CarServiceSpec extends Specification {
         val request = Request[IO](method = Method.PUT, uri = uri"/12")
           .withEntity(emptyCar)
 
-        val response = service.run(request).unsafeRunSync
+        val response = service.run(request).unsafeRunSync()
 
         response.status must beEqualTo(Status.Ok)
       }
@@ -170,7 +170,7 @@ class CarServiceSpec extends Specification {
         val request = Request[IO](method = Method.PUT, uri = uri"/1")
           .withEntity(emptyCar.copy(id = 1))
 
-        val response = service.run(request).unsafeRunSync
+        val response = service.run(request).unsafeRunSync()
 
         response.status must beEqualTo(Status.InternalServerError)
       }
@@ -181,7 +181,7 @@ class CarServiceSpec extends Specification {
       "responds ok" in {
         val request = Request[IO](method = Method.DELETE, uri = uri"/1")
 
-        val response = service.run(request).unsafeRunSync
+        val response = service.run(request).unsafeRunSync()
 
         response.status must beEqualTo(Status.Ok)
       }

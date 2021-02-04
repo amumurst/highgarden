@@ -24,8 +24,8 @@ object DatabaseEmbedder {
   val transactor: Resource[IO, Transactor[IO]] =
     for {
       con <- databaseConnection
-      te  <- ExecutionContexts.cachedThreadPool[IO]
-    } yield Transactor.fromConnection[IO](con, te)
+      bl  <- Blocker[IO]
+    } yield Transactor.fromConnection[IO](con, bl)
 
   def databaseTest(testFunc: Transactor[IO] => IO[Result]): Result =
     DatabaseEmbedder.transactor.use(testFunc).unsafeRunSync()

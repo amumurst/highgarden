@@ -1,14 +1,13 @@
 import sbt._
 
 object Dependencies {
-  private val http4sVersion = "0.20.3"
-  private val doobieVersion = "0.7.0"
-  private val circeVersion  = "0.11.1"
-  private val catsVersion   = "1.6.1"
+  private val http4sVersion = "0.21.18"
+  private val doobieVersion = "0.10.0"
+  private val circeVersion  = "0.13.0"
+  private val catsVersion   = "2.3.1"
 
   val cats = Seq(
     "org.typelevel" %% "cats-core",
-    "org.typelevel" %% "cats-macros",
     "org.typelevel" %% "cats-kernel"
   ).map(_ % catsVersion)
 
@@ -29,18 +28,19 @@ object Dependencies {
   ).map(_ % doobieVersion)
 
   val database = Seq(
-    "io.zonky.test" % "embedded-postgres" % "1.2.3",
-    "org.flywaydb"  % "flyway-core"       % "5.2.4"
+    "io.zonky.test"  % "embedded-postgres" % "1.2.10",
+    "org.flywaydb"   % "flyway-core"       % "5.2.4",
+    "org.postgresql" % "postgresql"        % "42.2.18"
   ) ++ doobie
 
   val divDeps = Seq(
-    "org.slf4j" % "slf4j-simple" % "1.7.26"
+    "org.slf4j" % "slf4j-simple" % "1.7.30"
   )
 
   val testDeps = Seq(
-    "org.specs2" %% "specs2-core"       % "4.5.1",
-    "org.specs2" %% "specs2-scalacheck" % "4.5.1",
-    "org.specs2" %% "specs2-mock"       % "4.5.1"
+    "org.specs2" %% "specs2-core"       % "4.10.6",
+    "org.specs2" %% "specs2-scalacheck" % "4.10.6",
+    "org.specs2" %% "specs2-mock"       % "4.10.6"
   ).map(_ % Test)
   val coreDeps = cats ++ http4s ++ database ++ divDeps ++ json
 }

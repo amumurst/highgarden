@@ -2,8 +2,9 @@ package no.amumurst
 package repository
 
 import cats.effect._
-import doobie.{ExecutionContexts, Transactor}
+import doobie._
 import io.zonky.test.db.postgres.embedded.{EmbeddedPostgres, FlywayPreparer}
+
 import javax.sql.DataSource
 
 object Database {
@@ -11,21 +12,25 @@ object Database {
       implicit cs: ContextShift[IO]): Resource[IO, Transactor[IO]] =
     for {
       ce <- ExecutionContexts.fixedThreadPool[IO](ceSize)
-      te <- ExecutionContexts.cachedThreadPool[IO]
-    } yield Transactor.fromDataSource[IO](ds, ce, te)
+      bl <- Blocker[IO]
+    } yield Transactor.fromDataSource[IO](ds, ce, bl)
 
   def migrate(dataSource: DataSource): IO[Unit] =
-    IO(
-      FlywayPreparer
-        .forClasspathLocation("classpath:db/migration")
-        .prepare(dataSource))
+    IO(FlywayPreparer.forClasspathLocation("classpath:db/migration"))
+      .map(_.prepare(dataSource))
 
   val createEmbedded: Resource[IO, DataSource] =
+    Resource
+      .make(IO(EmbeddedPostgres.builder().start()))(s => IO(s.close()))
+      .map(_.getPostgresDatabase)
+      .evalTap(migrate)
+
+  def embeddedTransactor(
+      implicit cs: ContextShift[IO]): Resource[IO, Transactor[IO]] =
     for {
-      embeddedDb <- Resource.make(IO(EmbeddedPostgres.builder().start()))(s =>
-                     IO(s.close()))
-      db = embeddedDb.getPostgresDatabase
-      _  <- Resource.liftF(migrate(db))
-    } yield db
+      ds <- createEmbedded
+      ce <- ExecutionContexts.fixedThreadPool[IO](32)
+      bl <- Blocker[IO]
+    } yield Transactor.fromDataSource[IO](ds, ce, bl)
 
 }
