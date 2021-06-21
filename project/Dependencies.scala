@@ -34,7 +34,10 @@ object Dependencies {
   ) ++ doobie
 
   val divDeps = Seq(
-    "org.slf4j" % "slf4j-simple" % "1.7.31"
+    "org.slf4j"                   % "slf4j-api"       % "1.7.31",
+    "ch.qos.logback"              % "logback-core"    % "1.2.3",
+    "ch.qos.logback"              % "logback-classic" % "1.2.3",
+    "com.typesafe.scala-logging" %% "scala-logging"   % "3.9.4"
   )
 
   val testDeps = Seq(

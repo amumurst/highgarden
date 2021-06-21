@@ -12,7 +12,7 @@ object Main extends IOApp {
   val createServer: Resource[IO, Server[IO]] =
     for {
       xa        <- Database.embeddedTransactor
-      carService = new CarService(CarRepository(xa)).service
+      carService = CarEndpoints(CarRepository(xa))
       httpApp    = Router("/cars" -> carService).orNotFound
       server <- BlazeServerBuilder[IO](executionContext)
                   .bindHttp(8080, "0.0.0.0")

@@ -29,12 +29,6 @@ lazy val baseSettings = Seq(
 )
 
 lazy val commonSettings = Seq(
-  scalacOptions ++= Seq(
-    "-feature",
-    "-language:higherKinds",
-    "-unchecked",
-    "-deprecation"
-  ),
   libraryDependencies ++= testDeps ++ coreDeps,
   assembly / test := {},
   Test / fork := true

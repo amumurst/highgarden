@@ -7,14 +7,14 @@ import org.http4s._
 import org.http4s.implicits._
 import org.specs2.mutable.Specification
 
-class CarServiceSpec extends Specification {
+class CarEndpointsSpec extends Specification {
   import CarServiceSpecData._
 
   "/" should {
     "GET" in {
       "responds OK" in {
         val repo    = new EmptyCarRepo {}
-        val service = new CarService(repo).service.orNotFound
+        val service = CarEndpoints(repo).orNotFound
         val request = Request[IO](method = Method.GET, uri = uri"/")
 
         val response = service.run(request).unsafeRunSync()
@@ -29,7 +29,7 @@ class CarServiceSpec extends Specification {
             Either.cond(car.id == 12, car, new Throwable("badstuff"))
           )
       }
-      val service = new CarService(repo).service.orNotFound
+      val service = CarEndpoints(repo).orNotFound
       "responds ok" in {
         val request = Request[IO](method = Method.POST, uri = uri"/")
           .withEntity(emptyCar)
@@ -52,7 +52,7 @@ class CarServiceSpec extends Specification {
         override def insertCar(car: Car): IO[Either[Throwable, Car]] =
           IO(Either.cond(car.id == 12, car, new Throwable("badstuff")))
       }
-      val service = new CarService(repo).service.orNotFound
+      val service = CarEndpoints(repo).orNotFound
 
       "responds ok" in {
         val request = Request[IO](method = Method.PUT, uri = uri"/")
@@ -73,7 +73,7 @@ class CarServiceSpec extends Specification {
     }
     "DELETE" in {
       val repo    = new EmptyCarRepo {}
-      val service = new CarService(repo).service.orNotFound
+      val service = CarEndpoints(repo).orNotFound
       "responds ok" in {
         val request = Request[IO](method = Method.DELETE, uri = uri"/1")
 
@@ -90,7 +90,7 @@ class CarServiceSpec extends Specification {
         override def getCar(id: Long): IO[Option[Car]] =
           IO(Some(emptyCar).filter(_ => id == 12))
       }
-      val service = new CarService(repo).service.orNotFound
+      val service = CarEndpoints(repo).orNotFound
       "responds notFound when asking for something not in database" in {
         val request = Request[IO](method = Method.GET, uri = uri"/45")
 
@@ -121,7 +121,7 @@ class CarServiceSpec extends Specification {
             Either.cond(car.id == 12, car, new Throwable("badstuff"))
           )
       }
-      val service = new CarService(repo).service.orNotFound
+      val service = CarEndpoints(repo).orNotFound
       "responds ok" in {
         val request = Request[IO](method = Method.PATCH, uri = uri"/12")
           .withEntity(emptyCar)
@@ -156,7 +156,7 @@ class CarServiceSpec extends Specification {
         override def getCar(id: Long): IO[Option[Car]] =
           IO(Some(emptyCar).filter(_.id == id))
       }
-      val service = new CarService(repo).service.orNotFound
+      val service = CarEndpoints(repo).orNotFound
 
       "responds ok" in {
         val request = Request[IO](method = Method.PUT, uri = uri"/12")
@@ -177,7 +177,7 @@ class CarServiceSpec extends Specification {
     }
     "DELETE" in {
       val repo    = new EmptyCarRepo {}
-      val service = new CarService(repo).service.orNotFound
+      val service = CarEndpoints(repo).orNotFound
       "responds ok" in {
         val request = Request[IO](method = Method.DELETE, uri = uri"/1")
 
