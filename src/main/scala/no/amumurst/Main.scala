@@ -11,13 +11,13 @@ object Main extends IOApp {
 
   val createServer: Resource[IO, Server[IO]] =
     for {
-      xa         <- Database.embeddedTransactor
+      xa        <- Database.embeddedTransactor
       carService = new CarService(CarRepository(xa)).service
       httpApp    = Router("/cars" -> carService).orNotFound
       server <- BlazeServerBuilder[IO](executionContext)
-                 .bindHttp(8080, "0.0.0.0")
-                 .withHttpApp(httpApp)
-                 .resource
+                  .bindHttp(8080, "0.0.0.0")
+                  .withHttpApp(httpApp)
+                  .resource
     } yield server
 
   override def run(args: List[String]): IO[ExitCode] =

@@ -15,8 +15,7 @@ trait CarRepositoryAlg[F[_]] {
   def deleteCars: F[Unit]
 }
 
-case class CarRepository(transactor: Transactor[IO])
-    extends CarRepositoryAlg[IO] {
+case class CarRepository(transactor: Transactor[IO]) extends CarRepositoryAlg[IO] {
 
   val getAllCars: IO[List[Car]] =
     CarRepositoryQueries.allCars.transact(transactor)

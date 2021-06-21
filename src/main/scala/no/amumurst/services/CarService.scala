@@ -47,13 +47,13 @@ class CarService(repo: CarRepositoryAlg[IO]) {
         cars     <- req.as[List[Car]]
         _        <- repo.deleteCars
         inserted <- cars.traverse(repo.insertCar)
-        oks      = inserted.collect { case Right(r) => r }
-        errs     = inserted.collect { case Left(err) => err }
+        oks       = inserted.collect { case Right(r) => r }
+        errs      = inserted.collect { case Left(err) => err }
         response <- errs match {
-                     case Nil => Ok(oks)
-                     case err =>
-                       InternalServerError(err.map(_.getMessage).mkString("/n"))
-                   }
+                      case Nil => Ok(oks)
+                      case err =>
+                        InternalServerError(err.map(_.getMessage).mkString("/n"))
+                    }
       } yield response
 
     case DELETE -> Root / LongVar(id) =>

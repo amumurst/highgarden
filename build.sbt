@@ -3,7 +3,7 @@ import Dependencies._
 enablePlugins(DockerPlugin)
 
 val dockerSettings = Seq(
-  dockerfile in docker := {
+  docker / dockerfile := {
     val artifact: File     = assembly.value
     val artifactTargetPath = s"/app/${artifact.name}"
 
@@ -17,14 +17,14 @@ val dockerSettings = Seq(
       entryPoint("java", "-jar", artifactTargetPath)
     }
   },
-  imageNames in docker := Seq(
+  docker / imageNames := Seq(
     ImageName(s"amumurst/${name.value}:latest")
   )
 )
 
 lazy val baseSettings = Seq(
   organization := "no.amumurst",
-  scalaVersion := "2.13.4",
+  scalaVersion := "2.13.6",
   version := "0.1.0-SNAPSHOT"
 )
 
@@ -36,7 +36,7 @@ lazy val commonSettings = Seq(
     "-deprecation"
   ),
   libraryDependencies ++= testDeps ++ coreDeps,
-  test in assembly := {},
+  assembly / test := {},
   Test / fork := true
 ) ++ baseSettings
 

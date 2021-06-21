@@ -8,8 +8,7 @@ import io.zonky.test.db.postgres.embedded.{EmbeddedPostgres, FlywayPreparer}
 import javax.sql.DataSource
 
 object Database {
-  def transactor(ds: DataSource, ceSize: Int = 32)(
-      implicit cs: ContextShift[IO]): Resource[IO, Transactor[IO]] =
+  def transactor(ds: DataSource, ceSize: Int = 32)(implicit cs: ContextShift[IO]): Resource[IO, Transactor[IO]] =
     for {
       ce <- ExecutionContexts.fixedThreadPool[IO](ceSize)
       bl <- Blocker[IO]
@@ -25,8 +24,7 @@ object Database {
       .map(_.getPostgresDatabase)
       .evalTap(migrate)
 
-  def embeddedTransactor(
-      implicit cs: ContextShift[IO]): Resource[IO, Transactor[IO]] =
+  def embeddedTransactor(implicit cs: ContextShift[IO]): Resource[IO, Transactor[IO]] =
     for {
       ds <- createEmbedded
       ce <- ExecutionContexts.fixedThreadPool[IO](32)

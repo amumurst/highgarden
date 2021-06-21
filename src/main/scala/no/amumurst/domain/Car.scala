@@ -7,10 +7,7 @@ import io.circe.generic.semiauto._
 import org.http4s._
 import org.http4s.circe._
 
-case class Car(id: Long,
-               licenseNumber: String,
-               color: String,
-               name: Option[String])
+case class Car(id: Long, licenseNumber: String, color: String, name: Option[String])
 
 object Car {
   implicit val carJsonEncoder: Encoder[Car] = deriveEncoder
