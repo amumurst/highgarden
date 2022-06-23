@@ -22,8 +22,8 @@ DELETE localhost:8080/cars |None| Delete all cars| None
 ### About
 Highgarden is built upon:
 
-Library | Version | Description
------------- | ------------- | -------------
+Library | Description
+------------ | -------------
 <a href="https://github.com/scala/scala">Scala</a> | Scala programming language
 <a href="https://github.com/sbt/sbt">Sbt</a> | Buildtool for scala
 <a href="https://github.com/sbt/sbt-assembly">Sbt-assembly</a> | Create fatjars from sbt, used in docker images
