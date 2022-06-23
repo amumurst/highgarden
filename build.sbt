@@ -24,7 +24,7 @@ val dockerSettings = Seq(
 
 lazy val baseSettings = Seq(
   organization := "no.amumurst",
-  scalaVersion := "2.13.6",
+  scalaVersion := "2.13.8",
   version := "0.1.0-SNAPSHOT"
 )
 

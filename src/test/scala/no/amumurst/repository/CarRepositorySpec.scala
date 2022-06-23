@@ -1,9 +1,10 @@
 package no.amumurst.repository
 
+import cats.effect.testing.specs2.CatsEffect
 import no.amumurst.domain.Car
 import org.specs2.mutable.Specification
 
-class CarRepositorySpec extends Specification {
+class CarRepositorySpec extends Specification with CatsEffect {
 
   import DatabaseEmbedder.databaseTest
 

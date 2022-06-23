@@ -4,17 +4,17 @@ import cats.effect._
 import no.amumurst.repository._
 import no.amumurst.services._
 import org.http4s.implicits._
-import org.http4s.server.blaze.BlazeServerBuilder
+import org.http4s.blaze.server.BlazeServerBuilder
 import org.http4s.server.{Router, Server}
 
 object Main extends IOApp {
 
-  val createServer: Resource[IO, Server[IO]] =
+  val createServer: Resource[IO, Server] =
     for {
       xa        <- Database.embeddedTransactor
       carService = CarEndpoints(CarRepository(xa))
       httpApp    = Router("/cars" -> carService).orNotFound
-      server <- BlazeServerBuilder[IO](executionContext)
+      server <- BlazeServerBuilder[IO]
                   .bindHttp(8080, "0.0.0.0")
                   .withHttpApp(httpApp)
                   .resource

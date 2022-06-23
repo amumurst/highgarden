@@ -5,11 +5,7 @@ import doobie.util.transactor.Transactor
 import io.zonky.test.db.postgres.embedded._
 import org.specs2.execute.Result
 
-import scala.concurrent.ExecutionContext
-
 object DatabaseEmbedder {
-
-  implicit val dsss: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
 
   lazy val provider: PreparedDbProvider =
     PreparedDbProvider.forPreparer(FlywayPreparer.forClasspathLocation("classpath:db/migration"))
@@ -23,11 +19,8 @@ object DatabaseEmbedder {
   )(c => IO(c.close()))
 
   val transactor: Resource[IO, Transactor[IO]] =
-    for {
-      con <- databaseConnection
-      bl  <- Blocker[IO]
-    } yield Transactor.fromConnection[IO](con, bl)
+    databaseConnection.map(Transactor.fromConnection[IO])
 
-  def databaseTest(testFunc: Transactor[IO] => IO[Result]): Result =
-    DatabaseEmbedder.transactor.use(testFunc).unsafeRunSync()
+  def databaseTest(testFunc: Transactor[IO] => IO[Result]): IO[Result] =
+    DatabaseEmbedder.transactor.use(testFunc)
 }
