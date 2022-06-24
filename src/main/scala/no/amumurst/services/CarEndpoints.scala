@@ -4,9 +4,10 @@ package services
 import cats.effect._
 import cats.implicits._
 import no.amumurst.domain.Car
-import no.amumurst.repository.CarRepositoryAlg
+import no.amumurst.repository.CarRepository
 import org.http4s._
 import org.http4s.dsl.io._
+import org.http4s.circe.CirceEntityCodec._
 
 object CarEndpoints {
   private def carResponse(e: Either[Throwable, Car]): IO[Response[IO]] =
@@ -15,7 +16,7 @@ object CarEndpoints {
       case Left(err)  => InternalServerError(err.getMessage)
     }
 
-  def apply(repo: CarRepositoryAlg[IO]): HttpRoutes[IO] =
+  def apply(repo: CarRepository): HttpRoutes[IO] =
     HttpRoutes.of[IO] {
       case GET -> Root =>
         Ok.apply(repo.getAllCars)

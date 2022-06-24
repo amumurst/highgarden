@@ -3,9 +3,10 @@ package no.amumurst.services
 import cats.effect._
 import cats.effect.testing.specs2.CatsEffect
 import no.amumurst.domain.Car
-import no.amumurst.repository.CarRepositoryAlg
+import no.amumurst.repository.CarRepository
 import org.http4s._
 import org.http4s.implicits._
+import org.http4s.circe.CirceEntityCodec._
 import org.specs2.mutable.Specification
 
 class CarEndpointsSpec extends Specification with CatsEffect {
@@ -194,7 +195,7 @@ class CarEndpointsSpec extends Specification with CatsEffect {
 }
 
 object CarServiceSpecData {
-  trait EmptyCarRepo extends CarRepositoryAlg[IO] {
+  trait EmptyCarRepo extends CarRepository {
     def getAllCars: IO[List[Car]]                       = IO(List.empty)
     def getCar(id: Long): IO[Option[Car]]               = IO(None)
     def insertCar(car: Car): IO[Either[Throwable, Car]] = IO(Right(car))

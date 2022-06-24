@@ -8,14 +8,11 @@ import io.zonky.test.db.postgres.embedded.{EmbeddedPostgres, FlywayPreparer}
 import javax.sql.DataSource
 
 object Database {
-  def transactor(ds: DataSource, ceSize: Int = 32): Resource[IO, Transactor[IO]] =
-    ExecutionContexts.fixedThreadPool[IO](ceSize).map(ce => Transactor.fromDataSource[IO](ds, ce))
-
-  def migrate(dataSource: DataSource): IO[Unit] =
+  private def migrate(dataSource: DataSource): IO[Unit] =
     IO(FlywayPreparer.forClasspathLocation("classpath:db/migration"))
       .map(_.prepare(dataSource))
 
-  val createEmbedded: Resource[IO, DataSource] =
+  private val createEmbedded: Resource[IO, DataSource] =
     Resource
       .make(IO(EmbeddedPostgres.builder().start()))(s => IO(s.close()))
       .map(_.getPostgresDatabase)
