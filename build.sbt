@@ -25,7 +25,7 @@ lazy val commonSettings = Seq(
   assembly / test := {},
   Test / fork := true,
   organization := "no.amumurst",
-  scalaVersion := "2.13.10"
+  scalaVersion := "3.2.0"
 )
 
 lazy val root =
