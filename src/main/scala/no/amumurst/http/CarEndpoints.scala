@@ -54,11 +54,10 @@ object CarEndpoints:
 
       case req @ PUT -> Root =>
         for
-          cars     <- req.as[List[CarJson]].map(_.map(_.asDomain))
-          _        <- repo.deleteCars
-          inserted <- cars.traverse(repo.insertCar)
-          oks       = inserted.collect { case Right(r) => r }
-          errs      = inserted.collect { case Left(err) => err }
+          cars       <- req.as[List[CarJson]].map(_.map(_.asDomain))
+          _          <- repo.deleteCars
+          inserted   <- cars.traverse(repo.insertCar)
+          (errs, oks) = inserted.separate
           response <- errs match {
                         case Nil => Ok(oks.map(CarJson.apply))
                         case err =>
