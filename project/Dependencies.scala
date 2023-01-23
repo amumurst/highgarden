@@ -21,7 +21,7 @@ object Dependencies {
     "ch.qos.logback"              % "logback-core"               % "1.4.5",
     "ch.qos.logback"              % "logback-classic"            % "1.4.5",
     "com.typesafe.scala-logging" %% "scala-logging"              % "3.9.5",
-    "org.specs2"                 %% "specs2-core"                % "4.19.1" % Test,
+    "org.specs2"                 %% "specs2-core"                % "4.19.0" % Test,
     "org.typelevel"              %% "cats-effect-testing-specs2" % "1.5.0"  % Test
   )
 }

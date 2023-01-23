@@ -20,7 +20,7 @@ class CarRepositorySpec extends Specification with CatsEffect {
       for {
         _      <- repo.insertCar(Car(1, "23", "1d", None))
         carOne <- repo.getCar(1)
-      } yield carOne must beSome.which(_.id must beEqualTo(1))
+      } yield carOne must beSome[Car].which(_.id must beEqualTo(1))
     }
   }
 }
