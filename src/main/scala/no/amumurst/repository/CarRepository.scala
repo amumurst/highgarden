@@ -56,13 +56,14 @@ object CarRepository:
       """.update.withUniqueGeneratedKeys[Car]("*")
 
     def updateCar(car: Car): ConnectionIO[Car] =
-      (fr"""
-            UPDATE car
-            SET
-              licence_plate = ${car.licenseNumber},
-              color = ${car.color},
-              navn = ${car.name}"""
-        ++ carIdFilter(car.id)).update.withUniqueGeneratedKeys[Car]("*")
+      val update =
+        fr"""
+                  UPDATE car
+                  SET
+                    licence_plate = ${car.licenseNumber},
+                    color = ${car.color},
+                    navn = ${car.name}"""
+      (update ++ carIdFilter(car.id)).update.withUniqueGeneratedKeys[Car]("*")
 
     def deleteCar(id: Long): ConnectionIO[Int] =
       (deleteFragment ++ carIdFilter(id)).update.run
