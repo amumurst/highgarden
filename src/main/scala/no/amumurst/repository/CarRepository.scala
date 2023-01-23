@@ -6,17 +6,16 @@ import doobie._
 import doobie.implicits._
 import no.amumurst.domain.Car
 
-trait CarRepository {
+trait CarRepository:
   def getAllCars: IO[List[Car]]
   def getCar(id: Long): IO[Option[Car]]
   def insertCar(car: Car): IO[Either[Throwable, Car]]
   def updateCar(car: Car): IO[Either[Throwable, Car]]
   def deleteCar(id: Long): IO[Unit]
   def deleteCars: IO[Unit]
-}
 
-object CarRepository {
-  def apply(transactor: Transactor[IO]): CarRepository = new CarRepository {
+object CarRepository:
+  def apply(transactor: Transactor[IO]): CarRepository = new CarRepository:
     val getAllCars: IO[List[Car]] =
       CarRepositoryQueries.allCars.transact(transactor)
     def getCar(id: Long): IO[Option[Car]] =
@@ -29,7 +28,7 @@ object CarRepository {
       CarRepositoryQueries.deleteCar(id).transact(transactor).void
     val deleteCars: IO[Unit] =
       CarRepositoryQueries.deleteAllCars.transact(transactor).void
-  }
+
   object CarRepositoryQueries {
     private val selectFragment: Fragment =
       fr"""SELECT * FROM car"""
@@ -71,4 +70,3 @@ object CarRepository {
     val deleteAllCars: ConnectionIO[Int] =
       deleteFragment.update.run
   }
-}

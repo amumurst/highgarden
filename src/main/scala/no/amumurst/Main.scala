@@ -4,7 +4,7 @@ import cats.effect.{IO, IOApp}
 import no.amumurst.repository.{CarRepository, Database}
 import no.amumurst.http.Server
 
-object Main extends IOApp.Simple {
+object Main extends IOApp.Simple:
   val makeServer =
     for {
       xa     <- Database.embeddedTransactor
@@ -12,4 +12,3 @@ object Main extends IOApp.Simple {
       server <- Server.start(carRepo)
     } yield server
   override def run: IO[Unit] = makeServer.useForever
-}

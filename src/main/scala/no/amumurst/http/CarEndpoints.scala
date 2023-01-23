@@ -10,14 +10,12 @@ import org.http4s._
 import org.http4s.dsl.io._
 import org.http4s.circe.CirceEntityCodec._
 
-object CarEndpoints {
-  case class CarJson(id: Long, licenseNumber: String, color: String, name: Option[String]) {
+object CarEndpoints:
+  case class CarJson(id: Long, licenseNumber: String, color: String, name: Option[String]) derives Codec.AsObject {
     lazy val asDomain: Car = Car(id, licenseNumber, color, name)
   }
-  object CarJson {
-    implicit val codec: Codec[CarJson] = deriveCodec
-    def apply(car: Car): CarJson       = CarJson(car.id, car.licenseNumber, car.color, car.name)
-  }
+  object CarJson:
+    def apply(car: Car): CarJson = CarJson(car.id, car.licenseNumber, car.color, car.name)
 
   private def carResponse(e: Either[Throwable, Car]): IO[Response[IO]] =
     e match {
@@ -47,15 +45,15 @@ object CarEndpoints {
           .flatMap(carResponse)
 
       case req @ PUT -> Root / LongVar(id) =>
-        for {
+        for
           car      <- req.as[CarJson]
           exists   <- repo.getCar(id)
           inserted <- exists.fold(repo.insertCar(car.asDomain))(_ => repo.updateCar(car.asDomain))
           response <- carResponse(inserted)
-        } yield response
+        yield response
 
       case req @ PUT -> Root =>
-        for {
+        for
           cars     <- req.as[List[CarJson]].map(_.map(_.asDomain))
           _        <- repo.deleteCars
           inserted <- cars.traverse(repo.insertCar)
@@ -66,11 +64,10 @@ object CarEndpoints {
                         case err =>
                           InternalServerError(err.map(_.getMessage).mkString("/n"))
                       }
-        } yield response
+        yield response
 
       case DELETE -> Root / LongVar(id) =>
         repo.deleteCar(id).flatMap(Ok(_))
       case DELETE -> Root =>
         repo.deleteCars.flatMap(Ok(_))
     }
-}

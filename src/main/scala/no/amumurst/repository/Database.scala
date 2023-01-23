@@ -7,7 +7,7 @@ import io.zonky.test.db.postgres.embedded.{EmbeddedPostgres, FlywayPreparer}
 
 import javax.sql.DataSource
 
-object Database {
+object Database:
   private def migrate(dataSource: DataSource): IO[Unit] =
     IO(FlywayPreparer.forClasspathLocation("classpath:db/migration"))
       .map(_.prepare(dataSource))
@@ -23,5 +23,3 @@ object Database {
       ds <- createEmbedded
       ce <- ExecutionContexts.fixedThreadPool[IO](32)
     } yield Transactor.fromDataSource[IO](ds, ce)
-
-}
