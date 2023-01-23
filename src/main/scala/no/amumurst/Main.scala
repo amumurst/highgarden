@@ -1,25 +1,15 @@
 package no.amumurst
 
-import cats.effect._
-import no.amumurst.repository._
-import no.amumurst.services._
-import org.http4s.implicits._
-import org.http4s.blaze.server.BlazeServerBuilder
-import org.http4s.server.{Router, Server}
+import cats.effect.{IO, IOApp}
+import no.amumurst.repository.{CarRepository, Database}
+import no.amumurst.http.Server
 
-object Main extends IOApp {
-
-  val createServer: Resource[IO, Server] =
+object Main extends IOApp.Simple {
+  val makeServer =
     for {
-      xa        <- Database.embeddedTransactor
-      carService = CarEndpoints(CarRepository(xa))
-      httpApp    = Router("/cars" -> carService).orNotFound
-      server <- BlazeServerBuilder[IO]
-                  .bindHttp(8080, "0.0.0.0")
-                  .withHttpApp(httpApp)
-                  .resource
+      xa     <- Database.embeddedTransactor
+      carRepo = CarRepository(xa)
+      server <- Server.start(carRepo)
     } yield server
-
-  override def run(args: List[String]): IO[ExitCode] =
-    createServer.use(_ => IO.never).as(ExitCode.Success)
+  override def run: IO[Unit] = makeServer.useForever
 }

@@ -1,8 +1,9 @@
-package no.amumurst.services
+package no.amumurst.http
 
 import cats.effect._
 import cats.effect.testing.specs2.CatsEffect
 import no.amumurst.domain.Car
+import no.amumurst.http.CarEndpoints.CarJson
 import no.amumurst.repository.CarRepository
 import org.http4s._
 import org.http4s.implicits._
@@ -34,7 +35,7 @@ class CarEndpointsSpec extends Specification with CatsEffect {
       val service = CarEndpoints(repo).orNotFound
       "responds ok" in {
         val request = Request[IO](method = Method.POST, uri = uri"/")
-          .withEntity(emptyCar)
+          .withEntity(CarJson(emptyCar))
 
         service.run(request).map { response =>
           response.status must beEqualTo(Status.Ok)
@@ -42,12 +43,11 @@ class CarEndpointsSpec extends Specification with CatsEffect {
       }
       "responds internalServerError when bad stuff happens" in {
         val request = Request[IO](method = Method.POST, uri = uri"/")
-          .withEntity(emptyCar.copy(id = 1))
+          .withEntity(CarJson(emptyCar).copy(id = 1))
 
         service.run(request).map { response =>
           response.status must beEqualTo(Status.InternalServerError)
         }
-
       }
     }
     "PUT" in {
@@ -59,7 +59,7 @@ class CarEndpointsSpec extends Specification with CatsEffect {
 
       "responds ok" in {
         val request = Request[IO](method = Method.PUT, uri = uri"/")
-          .withEntity(List(emptyCar, emptyCar))
+          .withEntity(List(CarJson(emptyCar), CarJson(emptyCar)))
 
         service.run(request).map { response =>
           response.status must beEqualTo(Status.Ok)
@@ -67,7 +67,7 @@ class CarEndpointsSpec extends Specification with CatsEffect {
       }
       "responds internalServerError when bad stuff happens with one car" in {
         val request = Request[IO](method = Method.PUT, uri = uri"/")
-          .withEntity(List(emptyCar, emptyCar.copy(id = 1)))
+          .withEntity(List(CarJson(emptyCar), CarJson(emptyCar).copy(id = 1)))
 
         service.run(request).map { response =>
           response.status must beEqualTo(Status.InternalServerError)
@@ -127,7 +127,7 @@ class CarEndpointsSpec extends Specification with CatsEffect {
       val service = CarEndpoints(repo).orNotFound
       "responds ok" in {
         val request = Request[IO](method = Method.PATCH, uri = uri"/12")
-          .withEntity(emptyCar)
+          .withEntity(CarJson(emptyCar))
 
         service.run(request).map { response =>
           response.status must beEqualTo(Status.Ok)
@@ -135,7 +135,7 @@ class CarEndpointsSpec extends Specification with CatsEffect {
       }
       "responds ok even if id in body is wrong" in {
         val request = Request[IO](method = Method.PATCH, uri = uri"/12")
-          .withEntity(emptyCar.copy(id = 1))
+          .withEntity(CarJson(emptyCar).copy(id = 1))
 
         service.run(request).map { response =>
           response.status must beEqualTo(Status.Ok)
@@ -143,7 +143,7 @@ class CarEndpointsSpec extends Specification with CatsEffect {
       }
       "responds internalServerError when bad stuff happens" in {
         val request = Request[IO](method = Method.PATCH, uri = uri"/11")
-          .withEntity(emptyCar)
+          .withEntity(CarJson(emptyCar))
 
         service.run(request).map { response =>
           response.status must beEqualTo(Status.InternalServerError)
@@ -163,7 +163,7 @@ class CarEndpointsSpec extends Specification with CatsEffect {
 
       "responds ok" in {
         val request = Request[IO](method = Method.PUT, uri = uri"/12")
-          .withEntity(emptyCar)
+          .withEntity(CarJson(emptyCar))
 
         service.run(request).map { response =>
           response.status must beEqualTo(Status.Ok)
@@ -171,7 +171,7 @@ class CarEndpointsSpec extends Specification with CatsEffect {
       }
       "responds internalServerError when bad stuff happens" in {
         val request = Request[IO](method = Method.PUT, uri = uri"/1")
-          .withEntity(emptyCar.copy(id = 1))
+          .withEntity(CarJson(emptyCar).copy(id = 1))
 
         service.run(request).map { response =>
           response.status must beEqualTo(Status.InternalServerError)

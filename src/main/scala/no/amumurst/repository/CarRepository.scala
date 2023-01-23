@@ -26,9 +26,9 @@ object CarRepository {
     def updateCar(car: Car): IO[Either[Throwable, Car]] =
       CarRepositoryQueries.updateCar(car).transact(transactor).attempt
     def deleteCar(id: Long): IO[Unit] =
-      CarRepositoryQueries.deleteCar(id).map(_ => ()).transact(transactor)
+      CarRepositoryQueries.deleteCar(id).transact(transactor).void
     val deleteCars: IO[Unit] =
-      CarRepositoryQueries.deleteAllCars.map(_ => ()).transact(transactor)
+      CarRepositoryQueries.deleteAllCars.transact(transactor).void
   }
   object CarRepositoryQueries {
     private val selectFragment: Fragment =
@@ -53,13 +53,12 @@ object CarRepository {
                 ${car.licenseNumber},
                 ${car.color},
                 ${car.name}
-                )
+              )
       """.update.withUniqueGeneratedKeys[Car]("*")
 
     def updateCar(car: Car): ConnectionIO[Car] =
       (fr"""
-            UPDATE
-              car
+            UPDATE car
             SET
               licence_plate = ${car.licenseNumber},
               color = ${car.color},
@@ -71,6 +70,5 @@ object CarRepository {
 
     val deleteAllCars: ConnectionIO[Int] =
       deleteFragment.update.run
-
   }
 }

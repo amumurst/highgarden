@@ -1,5 +1,3 @@
-import Dependencies._
-
 enablePlugins(DockerPlugin)
 
 val dockerSettings = Seq(
@@ -22,18 +20,13 @@ val dockerSettings = Seq(
   )
 )
 
-lazy val baseSettings = Seq(
+lazy val commonSettings = Seq(
+  libraryDependencies ++= Dependencies.coreDeps,
+  assembly / test := {},
+  Test / fork := true,
   organization := "no.amumurst",
-  scalaVersion := "2.13.8",
-  version := "0.1.0-SNAPSHOT"
+  scalaVersion := "2.13.10"
 )
 
-lazy val commonSettings = Seq(
-  libraryDependencies ++= testDeps ++ coreDeps,
-  assembly / test := {},
-  Test / fork := true
-) ++ baseSettings
-
 lazy val root =
-  (project in file("."))
-    .settings(commonSettings, name := "highgarden", dockerSettings)
+  (project in file(".")).settings(commonSettings, name := "highgarden", dockerSettings)

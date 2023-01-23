@@ -1,7 +1,9 @@
-package no.amumurst.domain
+package no.amumurst.http
 
 import io.circe._
 import io.circe.syntax._
+import no.amumurst.domain.Car
+import no.amumurst.http.CarEndpoints.CarJson
 import org.specs2.mutable.Specification
 
 class CarJsonSpec extends Specification {
@@ -16,10 +18,10 @@ class CarJsonSpec extends Specification {
   )
 
   "encoder" in {
-    car.asJson must beEqualTo(expectedJson)
+    CarJson(car).asJson must beEqualTo(expectedJson)
   }
   "decoder" in {
-    expectedJson.as[Car] must beRight { (c: Car) =>
+    expectedJson.as[CarJson].map(_.asDomain) must beRight { (c: Car) =>
       c must beEqualTo(car)
     }
   }
