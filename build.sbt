@@ -23,9 +23,9 @@ val dockerSettings = Seq(
 lazy val commonSettings = Seq(
   libraryDependencies ++= Dependencies.coreDeps,
   assembly / test := {},
-  Test / fork := true,
-  organization := "no.amumurst",
-  scalaVersion := "3.2.0"
+  Test / fork     := true,
+  organization    := "no.amumurst",
+  scalaVersion    := "3.2.1"
 )
 
 lazy val root =
